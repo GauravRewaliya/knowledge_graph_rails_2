@@ -1,12 +1,16 @@
 <div id="<%= dom_id project %>">
-  <p>
-    <strong>Title:</strong>
-    <%= project.title %>
-  </p>
-
-  <p>
-    <strong>Desc:</strong>
-    <%= project.desc %>
-  </p>
-
+    <li>
+        <strong>Title:</strong>
+        <ul><%= project.title %></ul>
+    </li>
+    <li>
+        <strong>Desc:</strong>
+        <ul><%= project.desc %></ul>
+    </li>
 </div>
+
+<style>
+    ul {
+        margin: 0px;
+    }
+</style>

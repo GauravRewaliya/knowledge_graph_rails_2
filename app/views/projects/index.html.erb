@@ -1,16 +1,39 @@
-<p style="color: green"><%= notice %></p>
-
 <% content_for :title, "Projects" %>
 
 <h1>Projects</h1>
 
+<%= link_to "New project", new_project_path %>
+<br>
 <div id="projects">
-  <% @projects.each do |project| %>
-    <%= render project %>
-    <p>
-      <%= link_to "Show this project", project %>
-    </p>
-  <% end %>
+  <table>
+    <tr>
+      <th>Title</td>
+      <th>Description</td>
+      <th>Show</td>
+    </tr>
+    <% @projects.each do |project| %>
+    <div id="<%= dom_id project %>">
+      <tr>
+        <td><%= project.title %></td>
+        <td><%= project.desc %></td>
+        <td><%= link_to "Show this project", project %></td>
+      </tr>
+    </div>
+    <% end %>
+  </table>
 </div>
 
-<%= link_to "New project", new_project_path %>
+<style>
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  th, td {
+    padding: 10px;
+    text-align: center;
+    border: 1px solid black;
+  }
+  th {
+    background-color: #f0f0f0;
+  }
+</style>
