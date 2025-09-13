@@ -32,3 +32,10 @@ exec "foreman start -f Procfile.dev"
 rails g scaffold DbScrapper user:references project:references url meta_data:jsonb source_provider sub_type response:jsonb fildered_response:jsonb parser_code:text final_response knowledge_storage_cypher_code:text
 
 rails g scaffold KnowledgeQueryfier user:references project:references cypher_dynamic_query:text meta_data_swagger_docs:jsonb tags title description:text
+
+# tips
+rails routes -g db_scrapper
+
+# 
+bin/vite dev
+rails s

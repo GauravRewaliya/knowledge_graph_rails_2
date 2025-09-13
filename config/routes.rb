@@ -1,9 +1,10 @@
 Rails.application.routes.draw do
-  resources :knowledge_queryfiers
-  resources :db_scrappers
-  resources :projects
+  resources :projects do
+    resources :knowledge_queryfiers
+    resources :db_scrappers
+  end
   devise_for :users, controllers: {
-    sessions: 'users/sessions'
+    sessions: "users/sessions"
   }
   root to: "home#index"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

@@ -4,7 +4,10 @@
     <%= button_to "Destroy this project", @project, method: :delete %>
   </div>
   <%= render @project %>
-  <%= link_to "Edit this project", edit_project_path(@project) %>
+  <div class="bar">
+    <%= link_to "DB Scrapper", project_db_scrappers_path %>
+    <%= link_to "Edit this project", edit_project_path(@project) %>
+  </div>
 </div>
 
 <style>

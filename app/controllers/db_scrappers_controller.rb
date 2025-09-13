@@ -1,4 +1,5 @@
 class DbScrappersController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_db_scrapper, only: %i[ show edit update destroy ]
 
   # GET /db_scrappers or /db_scrappers.json
@@ -22,7 +23,7 @@ class DbScrappersController < ApplicationController
   # POST /db_scrappers or /db_scrappers.json
   def create
     @db_scrapper = DbScrapper.new(db_scrapper_params)
-
+    @db_scrapper.user_id = current_user.id
     respond_to do |format|
       if @db_scrapper.save
         format.html { redirect_to @db_scrapper, notice: "Db scrapper was successfully created." }
@@ -52,7 +53,7 @@ class DbScrappersController < ApplicationController
     @db_scrapper.destroy!
 
     respond_to do |format|
-      format.html { redirect_to db_scrappers_path, notice: "Db scrapper was successfully destroyed.", status: :see_other }
+      format.html { redirect_to project_db_scrappers_path, notice: "Db scrapper was successfully destroyed.", status: :see_other }
       format.json { head :no_content }
     end
   end
@@ -60,6 +61,7 @@ class DbScrappersController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_db_scrapper
+      @project_id = params["project_id"]
       @db_scrapper = DbScrapper.find(params.expect(:id))
     end
 
