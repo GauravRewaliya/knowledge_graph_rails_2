@@ -76,3 +76,7 @@ gem "dotenv-rails", "~> 3.1"
 
 gem "rspec-rails", "~> 8.0"
 gem "factory_bot_rails", "~> 6.5"
+
+gem "vite_rails", "~> 3.0"
+
+gem "foreman", "~> 0.90.0"
