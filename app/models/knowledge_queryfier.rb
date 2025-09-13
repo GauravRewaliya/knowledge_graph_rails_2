@@ -20,6 +20,6 @@
 #
 
 class KnowledgeQueryfier < ApplicationRecord
-  belongs_to :user, nullable: true
+  belongs_to :user, optional: true
   belongs_to :project
 end

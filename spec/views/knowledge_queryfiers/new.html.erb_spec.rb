@@ -16,8 +16,7 @@ RSpec.describe "knowledge_queryfiers/new", type: :view do
   it "renders new knowledge_queryfier form" do
     render
 
-    assert_select "form[action=?][method=?]", knowledge_queryfiers_path, "post" do
-
+    assert_select "form[action=?][method=?]", project_knowledge_queryfiers_path, "post" do
       assert_select "input[name=?]", "knowledge_queryfier[user_id]"
 
       assert_select "input[name=?]", "knowledge_queryfier[project_id]"

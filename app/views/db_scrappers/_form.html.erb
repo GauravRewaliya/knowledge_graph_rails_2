@@ -1,4 +1,4 @@
-<%= form_with(model: db_scrapper, url: project_db_scrappers_path) do |form| %>
+<%= form_with(model: db_scrapper, url: project_db_scrappers_path(project_id: @project_id)) do |form| %>
   <% if db_scrapper.errors.any? %>
     <div style="color: red">
       <h2><%= pluralize(db_scrapper.errors.count, "error") %> prohibited this db_scrapper from being saved:</h2>

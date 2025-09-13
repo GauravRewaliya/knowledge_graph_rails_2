@@ -20,7 +20,7 @@ RSpec.describe "db_scrappers/new", type: :view do
   it "renders new db_scrapper form" do
     render
 
-    assert_select "form[action=?][method=?]", project_db_scrappers_path, "post" do
+    assert_select "form[action=?][method=?]", project_db_scrappers_path(project_id: @project_id), "post" do
       assert_select "input[name=?]", "db_scrapper[user_id]"
 
       assert_select "input[name=?]", "db_scrapper[project_id]"

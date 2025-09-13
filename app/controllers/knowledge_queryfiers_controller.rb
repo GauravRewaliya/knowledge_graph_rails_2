@@ -22,7 +22,7 @@ class KnowledgeQueryfiersController < ApplicationController
   # POST /knowledge_queryfiers or /knowledge_queryfiers.json
   def create
     @knowledge_queryfier = KnowledgeQueryfier.new(knowledge_queryfier_params)
-
+    @knowledge_queryfier.user_id = current_user.id
     respond_to do |format|
       if @knowledge_queryfier.save
         format.html { redirect_to @knowledge_queryfier, notice: "Knowledge queryfier was successfully created." }
@@ -52,7 +52,7 @@ class KnowledgeQueryfiersController < ApplicationController
     @knowledge_queryfier.destroy!
 
     respond_to do |format|
-      format.html { redirect_to knowledge_queryfiers_path, notice: "Knowledge queryfier was successfully destroyed.", status: :see_other }
+      format.html { redirect_to project_knowledge_queryfiers_path, notice: "Knowledge queryfier was successfully destroyed.", status: :see_other }
       format.json { head :no_content }
     end
   end

@@ -1,4 +1,4 @@
-<%= form_with(model: knowledge_queryfier) do |form| %>
+<%= form_with(model: knowledge_queryfier,url: project_knowledge_queryfiers_path) do |form| %>
   <% if knowledge_queryfier.errors.any? %>
     <div style="color: red">
       <h2><%= pluralize(knowledge_queryfier.errors.count, "error") %> prohibited this knowledge_queryfier from being saved:</h2>

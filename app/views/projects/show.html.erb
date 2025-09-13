@@ -5,7 +5,8 @@
   </div>
   <%= render @project %>
   <div class="bar">
-    <%= link_to "DB Scrapper", project_db_scrappers_path %>
+    <%= link_to "DB Scrapper", project_db_scrappers_path(project_id: @project.id) %>
+    <%= link_to "Knowledge Queryfier", project_knowledge_queryfiers_path(project_id: @project.id) %>
     <%= link_to "Edit this project", edit_project_path(@project) %>
   </div>
 </div>

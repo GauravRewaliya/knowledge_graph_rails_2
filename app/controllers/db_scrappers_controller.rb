@@ -53,7 +53,7 @@ class DbScrappersController < ApplicationController
     @db_scrapper.destroy!
 
     respond_to do |format|
-      format.html { redirect_to project_db_scrappers_path, notice: "Db scrapper was successfully destroyed.", status: :see_other }
+      format.html { redirect_to project_db_scrappers_path(project_id: @project_id), notice: "Db scrapper was successfully destroyed.", status: :see_other }
       format.json { head :no_content }
     end
   end
