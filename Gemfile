@@ -61,3 +61,18 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
 end
+
+gem "devise", "~> 4.9"
+
+gem "hashid-rails", "~> 1.4"
+gem "annotate", "~> 2.6"
+gem "neo4j-ruby-driver", "~> 4.4"
+
+gem "bcrypt", "~> 3.1"
+
+gem "rack-cors", "~> 3.0"
+
+gem "dotenv-rails", "~> 3.1"
+
+gem "rspec-rails", "~> 8.0"
+gem "factory_bot_rails", "~> 6.5"
