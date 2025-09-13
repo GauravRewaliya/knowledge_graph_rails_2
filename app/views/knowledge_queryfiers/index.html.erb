@@ -1,0 +1,16 @@
+<p style="color: green"><%= notice %></p>
+
+<% content_for :title, "Knowledge queryfiers" %>
+
+<h1>Knowledge queryfiers</h1>
+
+<div id="knowledge_queryfiers">
+  <% @knowledge_queryfiers.each do |knowledge_queryfier| %>
+    <%= render knowledge_queryfier %>
+    <p>
+      <%= link_to "Show this knowledge queryfier", knowledge_queryfier %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New knowledge queryfier", new_knowledge_queryfier_path %>

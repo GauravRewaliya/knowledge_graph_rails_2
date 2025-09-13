@@ -1,0 +1,16 @@
+<p style="color: green"><%= notice %></p>
+
+<% content_for :title, "Db scrappers" %>
+
+<h1>Db scrappers</h1>
+
+<div id="db_scrappers">
+  <% @db_scrappers.each do |db_scrapper| %>
+    <%= render db_scrapper %>
+    <p>
+      <%= link_to "Show this db scrapper", db_scrapper %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New db scrapper", new_db_scrapper_path %>

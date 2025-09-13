@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  resources :knowledge_queryfiers
+  resources :db_scrappers
+  resources :projects
   devise_for :users, controllers: {
     sessions: 'users/sessions'
   }

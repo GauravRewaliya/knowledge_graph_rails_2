@@ -1,0 +1,72 @@
+<%= form_with(model: db_scrapper) do |form| %>
+  <% if db_scrapper.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(db_scrapper.errors.count, "error") %> prohibited this db_scrapper from being saved:</h2>
+
+      <ul>
+        <% db_scrapper.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :user_id, style: "display: block" %>
+    <%= form.text_field :user_id %>
+  </div>
+
+  <div>
+    <%= form.label :project_id, style: "display: block" %>
+    <%= form.text_field :project_id %>
+  </div>
+
+  <div>
+    <%= form.label :url, style: "display: block" %>
+    <%= form.text_field :url %>
+  </div>
+
+  <div>
+    <%= form.label :meta_data, style: "display: block" %>
+    <%= form.text_field :meta_data %>
+  </div>
+
+  <div>
+    <%= form.label :source_provider, style: "display: block" %>
+    <%= form.text_field :source_provider %>
+  </div>
+
+  <div>
+    <%= form.label :sub_type, style: "display: block" %>
+    <%= form.text_field :sub_type %>
+  </div>
+
+  <div>
+    <%= form.label :response, style: "display: block" %>
+    <%= form.text_field :response %>
+  </div>
+
+  <div>
+    <%= form.label :fildered_response, style: "display: block" %>
+    <%= form.text_field :fildered_response %>
+  </div>
+
+  <div>
+    <%= form.label :parser_code, style: "display: block" %>
+    <%= form.textarea :parser_code %>
+  </div>
+
+  <div>
+    <%= form.label :final_response, style: "display: block" %>
+    <%= form.text_field :final_response %>
+  </div>
+
+  <div>
+    <%= form.label :knowledge_storage_cypher_code, style: "display: block" %>
+    <%= form.textarea :knowledge_storage_cypher_code %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>
