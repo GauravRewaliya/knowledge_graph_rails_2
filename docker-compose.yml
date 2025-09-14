@@ -1,0 +1,29 @@
+services:
+  neo4j:
+    image: neo4j:latest
+    container_name: neo4j
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    volumes:
+      - ./db_data/neo4j_data:/data
+    environment:
+      - NEO4J_AUTH=neo4j/password
+      - NEO4J_server_default__listen__address=0.0.0.0
+      - NEO4J_server_bolt_advertised__address=127.0.0.1:7687
+      - NEO4JLABS_PLUGINS=["apoc"]
+      - NEO4J_apoc_import_file_enabled=true
+      - NEO4J_apoc_export_file_enabled=true
+      - NEO4J_dbms_security_procedures_unrestricted=apoc.*
+
+  # postgresql:
+  #   image: postgres:latest
+  #   container_name: postgresql
+  #   ports:
+  #     - "95432:5432"
+  #   volumes:
+  #     - ./db_data/pg_data:/var/lib/postgresql/data
+  #   environment:
+  #     - POSTGRES_DB=knowledge_question_bank
+  #     - POSTGRES_USER=postgres
+  #     - POSTGRES_PASSWORD=password

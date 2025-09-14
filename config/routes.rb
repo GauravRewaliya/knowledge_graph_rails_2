@@ -1,6 +1,12 @@
 Rails.application.routes.draw do
   resources :projects do
     resources :knowledge_queryfiers
+    get "/kg_swagger", to: "knowledge_queryfiers#kg_swagger"
+    # get "/kg_swagger.json", to: "knowledge_queryfiers#kg_swagger", constraints: { format: :json } # JSON spec
+    match "/kg_api/*splat",
+      to: "knowledge_queryfiers#execute_kg",
+      via: [:get, :post, :put, :delete]
+
     resources :db_scrappers
   end
   devise_for :users, controllers: {

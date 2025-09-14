@@ -4,7 +4,7 @@ class CreateKnowledgeQueryfiers < ActiveRecord::Migration[8.0]
       t.references :user, null: true, foreign_key: true
       t.references :project, null: false, foreign_key: true
       t.text :cypher_dynamic_query
-      t.jsonb :meta_data_swagger_docs
+      t.jsonb :meta_data_swagger_docs, comment: "{method: GET , params: .. , url: .. , requried_params: .. , examples: [], is_depricated: False}"
       t.string :tags
       t.string :title
       t.text :description
