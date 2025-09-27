@@ -9,7 +9,7 @@
     <script src="https://unpkg.com/swagger-ui-dist/swagger-ui-bundle.js"></script>
     <script>
         SwaggerUIBundle({
-        url: "/projects/1/kg_swagger.json",
+        url: "/projects/<%=params[:project_id]%>/kg_swagger.json",
         dom_id: "#swagger-ui"
         });
     </script>

@@ -18,10 +18,12 @@ class KnowledgeQueryfiersController < ApplicationController
     sub_url = "/#{params[:splat]}"   # "api/questions"
     method  = request.method         # "POST", "GET", etc
 
-    kg_query_obj = KnowledgeQueryfier.sample.find do |x|
-      x.meta_data_swagger_docs[:url] == sub_url &&
-      x.meta_data_swagger_docs[:method].casecmp?(method)
-    end
+    kg_query_obj = KnowledgeQueryfier.where(
+      "project_id = :project_id AND meta_data_swagger_docs->>'url' = :sub_url AND LOWER(meta_data_swagger_docs->>'method') = :method",
+      project_id: project_id,
+      sub_url: sub_url,
+      method: method.to_s.downcase
+    ).first
 
     if kg_query_obj
       # Remove Rails-internal keys
