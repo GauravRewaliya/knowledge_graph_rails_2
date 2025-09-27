@@ -1,0 +1,9 @@
+<script>
+   (() => {
+    const sid = <%= session_id %>;
+    if (typeof sessions !== "undefined") {
+      sessions[sid] = <%= raw(messages.to_json) %>;
+    }
+    renderMessages();
+  })();
+</script>

@@ -1,5 +1,6 @@
 require "ai/ai_service_interface"
 require "ai/gemini_service"
+require "ai/script_tools/kg_tools"
 class KnowledgeQueryfiersController < ApplicationController
   skip_before_action :verify_authenticity_token, only: [ :execute_kg ]
   before_action :set_knowledge_queryfier, only: %i[ show edit update destroy ]
@@ -95,17 +96,30 @@ class KnowledgeQueryfiersController < ApplicationController
   end
   # POST /kg_swagger_dev_agent
   def kg_swagger_dev_agent
-    prompt = params[:message]
+    messages = JSON.parse(params[:messages])
     ai = GeminiService.new
-
-    response = ai.chat(messages: [ { role: "user", content: prompt } ])
+    is_system_message = false
+    if messages.length == 1
+      is_system_message = true
+      messages.unshift({ "role" => "system", "content" => ScriptTools::KgTools.system_prompt(params[:project_id]) })
+    end
+    response = ai.chat(messages: messages)
 
     # render json: { reply: response }
     respond_to do |format|
       format.turbo_stream do
-        render turbo_stream: turbo_stream.append("chat-messages",
-          partial: "knowledge_queryfiers/message",
-          locals: { role: "agent", content: response, session_id: params[:session_id] })
+        if is_system_message
+          messages << { role: "agent", content: response }
+          render turbo_stream: turbo_stream.update("chat-messages",
+            partial: "knowledge_queryfiers/messages",
+            locals: { messages: messages, session_id: params[:session_id] }
+          )
+        else
+          render turbo_stream: turbo_stream.append("chat-messages",
+            partial: "knowledge_queryfiers/message_append",
+            locals: { role: "agent", content: response, session_id: params[:session_id] }
+          )
+        end
       end
     end
   end
