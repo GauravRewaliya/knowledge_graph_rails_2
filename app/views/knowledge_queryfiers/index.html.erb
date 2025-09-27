@@ -2,13 +2,14 @@
 
 <h1>Knowledge queryfiers</h1>
 
+<%= link_to "New knowledge queryfier", new_project_knowledge_queryfier_path %>
+<%= link_to "Import New Data", new_project_knowledge_queryfier_path %>
+
 <div id="knowledge_queryfiers">
   <% @knowledge_queryfiers.each do |knowledge_queryfier| %>
     <%= render knowledge_queryfier %>
-    <p>
-      <%= link_to "Show this knowledge queryfier", knowledge_queryfier %>
-    </p>
+    <%= link_to "Show this knowledge queryfier", knowledge_queryfier %>
+    <%= link_to "Export This Data", new_project_knowledge_queryfier_path %>
   <% end %>
 </div>
 
-<%= link_to "New knowledge queryfier", new_project_knowledge_queryfier_path %>

@@ -1,0 +1,13 @@
+<div class="chat-message <%= role %>">
+  <span class="role"><%= role.capitalize %>:</span>
+  <span class="content"><%= content %></span>
+</div>
+<script>
+   (() => {
+    const sid = <%= session_id %>; // passed from controller/locals
+    if (typeof sessions !== "undefined") {
+      if (!sessions[sid]) sessions[sid] = [];
+      sessions[sid].push({ role: "<%= role %>", content: "<%= j content %>" });
+    }
+  })();
+</script>

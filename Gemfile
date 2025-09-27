@@ -80,3 +80,5 @@ gem "factory_bot_rails", "~> 6.5"
 gem "vite_rails", "~> 3.0"
 
 gem "foreman", "~> 0.90.0"
+
+gem "httparty", "~> 0.23.1"

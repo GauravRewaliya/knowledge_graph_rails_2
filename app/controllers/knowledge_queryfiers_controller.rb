@@ -1,5 +1,7 @@
+require "ai/ai_service_interface"
+require "ai/gemini_service"
 class KnowledgeQueryfiersController < ApplicationController
-  skip_before_action :verify_authenticity_token, only: [:execute_kg]
+  skip_before_action :verify_authenticity_token, only: [ :execute_kg ]
   before_action :set_knowledge_queryfier, only: %i[ show edit update destroy ]
 
   # GET /kg_swagger(.json)
@@ -85,6 +87,29 @@ class KnowledgeQueryfiersController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  # Get /kg_swagger_development
+  def kg_swagger_development
+    @project = Project.find(params[:id])
+    render "kg_swagger_development"
+  end
+  # POST /kg_swagger_dev_agent
+  def kg_swagger_dev_agent
+    prompt = params[:message]
+    ai = GeminiService.new
+
+    response = ai.chat(messages: [ { role: "user", content: prompt } ])
+
+    # render json: { reply: response }
+    respond_to do |format|
+      format.turbo_stream do
+        render turbo_stream: turbo_stream.append("chat-messages",
+          partial: "knowledge_queryfiers/message",
+          locals: { role: "agent", content: response, session_id: params[:session_id] })
+      end
+    end
+  end
+
 
   private
     # Use callbacks to share common setup or constraints between actions.

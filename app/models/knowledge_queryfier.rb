@@ -54,24 +54,25 @@ class KnowledgeQueryfier < ApplicationRecord
                 "application/json" => {
                   schema: {
                     type: "array",
-                    items: {
-                      type: "object",
-                      properties: {
-                        id: { type: "string", example: "uuid" },
-                        content: { type: "string", example: "What is 2+2?" },
-                        tag: { type: "string", example: "Math" },
-                        answers: {
-                          type: "array",
-                          items: {
-                            type: "object",
-                            properties: {
-                              id: { type: "string" },
-                              content: { type: "string" }
-                            }
-                          }
-                        }
-                      }
-                    }
+                    items: { "$ref": "#/components/schemas/Question" }
+                    # {
+                    #   type: "object",
+                    #   properties: {
+                    #     id: { type: "string", example: "3fa85f64-5717-4562-b3fc-2c963f66afa6" },
+                    #     content: { type: "string", example: "What is 2+2?" },
+                    #     tag: { type: "string", example: "Math" },
+                    #     answers: {
+                    #       type: "array",
+                    #       items: {
+                    #         type: "object",
+                    #         properties: {
+                    #           id: { type: "string" },
+                    #           content: { type: "string" }
+                    #         }
+                    #       }
+                    #     }
+                    #   }
+                    # }
                   },
                   example: [
                     { id: "uuid", content: "What is 2+2?", tag: "Math", answers: [] }
@@ -96,7 +97,7 @@ class KnowledgeQueryfier < ApplicationRecord
               name: "tag",
               in: "path",
               required: true,
-              schema: { type: "string", enum: ["Math", "Science"], example: "Math" },
+              schema: { type: "string", enum: [ "Math", "Science" ], example: "Math" },
               description: "Filter questions by tag"
             }
           ],
@@ -144,14 +145,15 @@ class KnowledgeQueryfier < ApplicationRecord
             required: true,
             content: {
               "application/json" => {
-                schema: {
-                  type: "object",
-                  properties: {
-                    content: { type: "string", example: "What is 3+3?" },
-                    tag: { type: "string", enum: ["Math", "Science"], example: "Math" }
-                  },
-                  required: ["content", "tag"]
-                }
+                schema: { "$ref": "#/components/schemas/Question" }
+                # {
+                #   type: "object",
+                #   properties: {
+                #     content: { type: "string", example: "What is 3+3?" },
+                #     tag: { type: "string", enum: [ "Math", "Science" ], example: "Math" }
+                #   },
+                #   required: [ "content", "tag" ]
+                # }
               }
             }
           },
@@ -163,7 +165,7 @@ class KnowledgeQueryfier < ApplicationRecord
                   schema: {
                     type: "object",
                     properties: {
-                      id: { type: "string", example: "uuid" },
+                      id: { type: "string", example: "3fa85f64-5717-4562-b3fc-2c963f66afa6" },
                       content: { type: "string", example: "What is 3+3?" }
                     }
                   }
@@ -188,7 +190,7 @@ class KnowledgeQueryfier < ApplicationRecord
               name: "question_id",
               in: "path",
               required: true,
-              schema: { type: "string", example: "uuid" }
+              schema: { type: "string", example: "3fa85f64-5717-4562-b3fc-2c963f66afa6" }
             }
           ],
           request_body: {
@@ -200,7 +202,7 @@ class KnowledgeQueryfier < ApplicationRecord
                   properties: {
                     content: { type: "string", example: "6" }
                   },
-                  required: ["content"]
+                  required: [ "content" ]
                 }
               }
             }
@@ -213,7 +215,7 @@ class KnowledgeQueryfier < ApplicationRecord
                   schema: {
                     type: "object",
                     properties: {
-                      id: { type: "string", example: "uuid" },
+                      id: { type: "string", example: "3fa85f64-5717-4562-b3fc-2c963f66afa6" },
                       content: { type: "string", example: "6" }
                     }
                   }
@@ -237,7 +239,7 @@ class KnowledgeQueryfier < ApplicationRecord
               name: "question_id",
               in: "path",
               required: true,
-              schema: { type: "string", example: "uuid" }
+              schema: { type: "string", example: "3fa85f64-5717-4562-b3fc-2c963f66afa6" }
             }
           ],
           request_body: nil,
@@ -256,7 +258,7 @@ class KnowledgeQueryfier < ApplicationRecord
                       }
                     }
                   },
-                  example: [{ id: "uuid", content: "6" }]
+                  example: [ { id: "uuid", content: "6" } ]
                 }
               }
             }
@@ -289,7 +291,7 @@ class KnowledgeQueryfier < ApplicationRecord
                       }
                     }
                   },
-                  example: [{ name: "Math" }, { name: "Science" }]
+                  example: [ { name: "Math" }, { name: "Science" } ]
                 }
               }
             }
@@ -329,7 +331,7 @@ class KnowledgeQueryfier < ApplicationRecord
                       }
                     }
                   },
-                  example: { name: "Addition", hierarchy: ["Math"] }
+                  example: { name: "Addition", hierarchy: [ "Math" ] }
                 }
               }
             }
@@ -351,7 +353,7 @@ class KnowledgeQueryfier < ApplicationRecord
               name: "question_id",
               in: "path",
               required: true,
-              schema: { type: "string", example: "uuid" }
+              schema: { type: "string", example: "3fa85f64-5717-4562-b3fc-2c963f66afa6" }
             }
           ],
           request_body: nil,
@@ -395,7 +397,7 @@ class KnowledgeQueryfier < ApplicationRecord
               name: "question_id",
               in: "path",
               required: true,
-              schema: { type: "string", example: "uuid" }
+              schema: { type: "string", example: "3fa85f64-5717-4562-b3fc-2c963f66afa6" }
             }
           ],
           request_body: {
@@ -408,7 +410,7 @@ class KnowledgeQueryfier < ApplicationRecord
                     text: { type: "string", example: "Great question!" },
                     user_id: { type: "string", example: "user123" }
                   },
-                  required: ["text", "user_id"]
+                  required: [ "text", "user_id" ]
                 }
               }
             }
@@ -421,7 +423,7 @@ class KnowledgeQueryfier < ApplicationRecord
                   schema: {
                     type: "object",
                     properties: {
-                      id: { type: "string", example: "uuid" },
+                      id: { type: "string", example: "3fa85f64-5717-4562-b3fc-2c963f66afa6" },
                       text: { type: "string", example: "Great question!" }
                     }
                   }
@@ -507,53 +509,167 @@ class KnowledgeQueryfier < ApplicationRecord
     ]
     data.map { |h| OpenStruct.new(h) }
   end
+  # --- helper normalizers ---
+  def self.normalize_meta_hash(meta)
+    # Accept meta as symbol- or string-keyed Hash or OpenStruct-like
+    mh = meta.to_h.transform_keys { |k| k.to_s }
+    # Normalize small key names
+    normalized = {}
+
+    normalized["url"]          = mh["url"].to_s
+    normalized["method"]       = mh["method"].to_s.upcase
+    normalized["is_deprecated"] = mh.fetch("is_deprecated", false)
+    normalized["parameters"]   = mh.fetch("parameters", []) || []
+    normalized["request_body"] = mh.fetch("request_body", nil)
+    normalized["responses"]    = mh.fetch("responses", nil)
+    normalized
+  end
+
+  # --- swagger builder ---
+  def self.component_structure(project_id)
+    {
+      "schemas" => {
+        "Question" => {
+          "type" => "object",
+          "properties" => {
+            "id"      => { "type" => "string", "format" => "uuid" },
+            "content" => { "type" => "string" },
+            "tag"     => { "type" => "string" },
+            "answers" => { "type" => "array", "items" => { "$ref" => "#/components/schemas/Answer" } }
+          },
+          "example" => { "id" => "3fa85f64-5717-4562-b3fc-2c963f66afa6", "content" => "What is 2+2?", "tag" => "Math", "answers" => [] }
+        },
+        "Answer" => {
+          "type" => "object",
+          "properties" => {
+            "id"      => { "type" => "string", "format" => "uuid" },
+            "content" => { "type" => "string" }
+          },
+          "example" => { "id" => "3fa85f64-5717-4562-b3fc-2c963f66afa6", "content" => "4" }
+        },
+        "Tag" => {
+          "type" => "object",
+          "properties" => { "name" => { "type" => "string" } },
+          "example" => { "name" => "Math" }
+        },
+        "Comment" => {
+          "type" => "object",
+          "properties" => {
+            "id"         => { "type" => "string", "format" => "uuid" },
+            "text"       => { "type" => "string" },
+            "user_id"    => { "type" => "string" },
+            "created_at" => { "type" => "string", "format" => "date-time" }
+          },
+          "example" => { "id" => "3fa85f64-5717-4562-b3fc-2c963f66afa6", "text" => "Great question!", "user_id" => "user123", "created_at" => "2024-01-01T00:00:00Z" }
+        },
+        "Relation" => {
+          "type" => "object",
+          "properties" => { "relationshipType" => { "type" => "string" } },
+          "example" => { "relationshipType" => "HAS_TAG" }
+        },
+        "Entity" => {
+          "type" => "object",
+          "properties" => { "label" => { "type" => "string" } },
+          "example" => { "label" => "Question" }
+        }
+      },
+      "parameters" => {
+        "UUIDParam" => {
+          "name" => "id", "in" => "path", "required" => true,
+          "schema" => { "type" => "string", "format" => "uuid" },
+          "example" => "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+        },
+        "TagParam" => {
+          "name" => "tag", "in" => "path", "required" => true,
+          "schema" => { "type" => "string", "enum" => [ "Math", "Science" ] },
+          "example" => "Math"
+        }
+      },
+      "examples" => {
+        "QuestionExample1" => { "value" => { "id" => "3fa85f64-5717-4562-b3fc-2c963f66afa6", "content" => "What is 2+2?", "tag" => "Math", "answers" => [] } },
+        "QuestionExample2" => { "value" => { "id" => "3fa85f64-5717-4562-b3fc-2c963f66afa6", "content" => "What is gravity?", "tag" => "Science", "answers" => [] } }
+      }
+    }
+  end
   def self.swagger_json(project_id)
     kg_queries = KnowledgeQueryfier.sample
     paths = {}
 
     kg_queries.each do |q|
-      docs = q.meta_data_swagger_docs.is_a?(Array) ? q.meta_data_swagger_docs : [q.meta_data_swagger_docs]
+      docs = q.meta_data_swagger_docs.is_a?(Array) ? q.meta_data_swagger_docs : [ q.meta_data_swagger_docs ]
+      docs.each do |meta_raw|
+        meta = normalize_meta_hash(meta_raw)
+        url = meta["url"].to_s
+        next if url.empty?
 
-      docs.each do |meta|
-        url    = meta[:url].to_s
-        method = meta[:method].to_s.downcase
+        url = "/#{url}" unless url.start_with?("/")
+        method = (meta["method"] || "GET").downcase
 
         paths[url] ||= {}
-        paths[url][method] ||= {
-          summary:     q.title,
-          description: q.desc,
-          deprecated:  meta[:is_deprecated] || false,
-          requestBody: meta[:request_body],
-          responses:   meta[:responses] || {
-            "200" => {
-              description: "Successful response",
-              content: {
-                "application/json" => {
-                  example: meta.dig(:examples, 0, :response)
-                }
+
+        # Parameters
+        parameters = (meta["parameters"] || []).map do |p|
+          ph = p.to_h.transform_keys(&:to_s)
+          {
+            "name"        => ph["name"],
+            "in"          => ph["in"] || "path",
+            "required"    => ph.key?("required") ? ph["required"] : (ph["in"] == "path"),
+            "schema"      => ph["schema"],
+            "description" => ph["description"]
+          }.compact
+        end
+
+        # Request body
+        request_body = nil
+        if meta["request_body"]
+          rb = meta["request_body"].to_h.transform_keys(&:to_s)
+          request_body = {
+            "required" => rb.fetch("required", false),
+            "content"  => rb["content"] || {}
+          }
+        end
+
+        # Responses (default fallback)
+        responses = meta["responses"] || {
+          "200" => {
+            "description" => "Successful response",
+            "content" => {
+              "application/json" => {
+                "schema"  => { "type" => "object" },
+                "example" => meta.dig(:examples, 0, :response)
               }
             }
           }
         }
+
+        paths[url][method] = {
+          "summary"     => q.title,
+          "description" => q.desc,
+          "deprecated"  => meta["is_deprecated"] || false,
+          "parameters"  => parameters.empty? ? nil : parameters,
+          "requestBody" => request_body,
+          "responses"   => responses
+        }.compact
       end
     end
 
-    {
-      openapi: "3.0.0",
-      info: {
-        title: "KG API",
-        version: "1.0.0",
-        description: "Dynamic Knowledge Graph APIs"
+    openapi = {
+      "openapi" => "3.0.0",
+      "info" => {
+        "title"       => "Knowledge Graph API",
+        "version"     => "1.0.0",
+        "description" => "Dynamic Knowledge Graph APIs with Questions, Answers, Tags, Comments, Relations, Entities"
       },
-      paths: paths,
-      servers: [
-        {
-          url: "/projects/#{project_id}/kg_api",
-          description: "Project KG API"
-        }
-      ]
+      "servers" => [
+        { "url" => "/projects/#{project_id}/kg_api", "description" => "Project KG API" }
+      ],
+      "paths" => paths,
+      "components" => KnowledgeQueryfier.component_structure(project_id)
     }
+
+    JSON.pretty_generate(openapi)
   end
+
   private
 
   def graph_db
