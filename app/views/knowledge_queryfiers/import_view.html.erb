@@ -1,0 +1,7 @@
+<!-- app/views/knowledge_queryfiers/import_view.html.erb -->
+<h2>Import Knowledge Queryfiers JSON</h2>
+<%= form_with url: import_knowledge_queryfier_project_knowledge_queryfiers_path(params[:project_id]),
+              local: true, multipart: true do |f| %>
+  <%= f.file_field :file %>
+  <%= f.submit "Import" %>
+<% end %>

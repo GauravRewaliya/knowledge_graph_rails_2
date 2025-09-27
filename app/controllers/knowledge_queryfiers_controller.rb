@@ -4,6 +4,7 @@ require "ai/script_tools/kg_tools"
 class KnowledgeQueryfiersController < ApplicationController
   skip_before_action :verify_authenticity_token, only: [ :execute_kg ]
   before_action :set_knowledge_queryfier, only: %i[ show edit update destroy ]
+  before_action :set_project, only: %i[ export import ]
 
   # GET /kg_swagger(.json)
   def kg_swagger
@@ -126,11 +127,53 @@ class KnowledgeQueryfiersController < ApplicationController
     end
   end
 
+  def export
+    filename = "#{@project.title}_#{@project.id}.json"
+    data = KnowledgeQueryfier.where(project_id: @project.id).all.to_json
+
+    send_data data,
+              type: "application/json; header=present",
+              disposition: "attachment",
+              filename: filename
+  end
+
+  def import_view
+    # simple form to upload JSON
+  end
+
+  def import
+    file = params[:file] # file uploaded from form
+    json_data = JSON.parse(file.read)
+    existing_data = KnowledgeQueryfier
+      .where(project_id: params[:project_id])
+      .pluck(Arel.sql("(meta_data_swagger_docs->>'method')::text || '::' || (meta_data_swagger_docs->>'url')::text"))
+
+    json_data.each do |item|
+      key = "#{item["meta_data_swagger_docs"]["method"]}::#{item["meta_data_swagger_docs"]["url"]}"
+
+
+      # Skip if already exists
+      next if existing_data.include?(key)
+
+      # Clean up unwanted fields
+      item.delete("id")
+      item.delete("created_at")
+      item.delete("updated_at")
+      item.delete("project_id")
+
+      KnowledgeQueryfier.create!(item.merge("project_id" => @project.id))
+    end
+
+    redirect_to project_knowledge_queryfiers_path(@project), notice: "Data imported successfully"
+  end
 
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_knowledge_queryfier
       @knowledge_queryfier = KnowledgeQueryfier.find(params.expect(:id))
+    end
+    def set_project
+      @project = Project.find(params[:project_id])
     end
 
     # Only allow a list of trusted parameters through.

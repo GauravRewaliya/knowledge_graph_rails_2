@@ -3,7 +3,8 @@
 <h1>Knowledge queryfiers</h1>
 
 <%= link_to "New knowledge queryfier", new_project_knowledge_queryfier_path %>
-<%= link_to "Import New Data", new_project_knowledge_queryfier_path %>
+<%= link_to "Import New Data", import_knowledge_queryfier_project_knowledge_queryfiers_path(params[:project_id]) %> |
+<%= button_to "Export All Data", export_project_knowledge_queryfiers_path(params[:project_id]), method: :post ,data: { turbo: false }%>
 
 <div id="knowledge_queryfiers">
   <% @knowledge_queryfiers.each do |knowledge_queryfier| %>

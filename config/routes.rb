@@ -1,7 +1,11 @@
 Rails.application.routes.draw do
   resources :projects do
     resources :knowledge_queryfiers do
-      post "/export", to: "knowledge_queryfiers#export"
+      collection do
+        get  :import_knowledge_queryfier, action: :import_view
+        post :import_knowledge_queryfier, action: :import
+        post :export, action: :export
+      end
     end
     get "/kg_swagger", to: "knowledge_queryfiers#kg_swagger"
     # get "/kg_swagger_development", to: "knowledge_queryfiers#kg_swagger_development" # chat interface and side bar of kg_swagger
@@ -12,10 +16,9 @@ Rails.application.routes.draw do
 
     # get "/kg_swagger.json", to: "knowledge_queryfiers#kg_swagger", constraints: { format: :json } # JSON spec
     match "/kg_api/*splat",
-      to: "knowledge_queryfiers#execute_kg",
-      via: [ :get, :post, :put, :delete ]
+    to: "knowledge_queryfiers#execute_kg",
+    via: [ :get, :post, :put, :delete ]
 
-    post "/import_knowledge_queryfier", to: "knowledge_queryfiers#import"
     resources :db_scrappers
   end
   devise_for :users, controllers: {
