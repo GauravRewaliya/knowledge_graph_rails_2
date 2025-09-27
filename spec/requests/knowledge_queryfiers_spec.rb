@@ -13,7 +13,6 @@ require 'rails_helper'
 # sticking to rails and rspec-rails APIs to keep things simple and stable.
 
 RSpec.describe "/knowledge_queryfiers", type: :request do
-  
   # This should return the minimal set of attributes required to create a valid
   # KnowledgeQueryfier. As you add validations to KnowledgeQueryfier, be sure to
   # adjust the attributes here as well.
@@ -51,7 +50,7 @@ RSpec.describe "/knowledge_queryfiers", type: :request do
   describe "GET /edit" do
     it "renders a successful response" do
       knowledge_queryfier = KnowledgeQueryfier.create! valid_attributes
-      get edit_knowledge_queryfier_url(knowledge_queryfier)
+      get edit_project_knowledge_queryfier_url(project_id: 2, id: knowledge_queryfier.id)
       expect(response).to be_successful
     end
   end

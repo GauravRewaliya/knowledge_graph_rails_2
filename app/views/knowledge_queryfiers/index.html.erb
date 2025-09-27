@@ -8,7 +8,7 @@
 <div id="knowledge_queryfiers">
   <% @knowledge_queryfiers.each do |knowledge_queryfier| %>
     <%= render knowledge_queryfier %>
-    <%= link_to "Show this knowledge queryfier", knowledge_queryfier %>
+    <%= link_to "Show this knowledge queryfier", project_knowledge_queryfier_path(id: knowledge_queryfier.id) %>
     <%= link_to "Export This Data", new_project_knowledge_queryfier_path %>
   <% end %>
 </div>
