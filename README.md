@@ -39,3 +39,6 @@ rails routes -g db_scrapper
 # 
 bin/vite dev
 rails s
+
+## VsCode Extension
+* misogi.ruby-rubocop // for linting & formatting

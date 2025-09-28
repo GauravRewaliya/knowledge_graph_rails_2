@@ -25,7 +25,6 @@ RSpec.describe "db_scrappers/edit", type: :view do
     render
 
     assert_select "form[action=?][method=?]", db_scrapper_path(db_scrapper), "post" do
-
       assert_select "input[name=?]", "db_scrapper[user_id]"
 
       assert_select "input[name=?]", "db_scrapper[project_id]"

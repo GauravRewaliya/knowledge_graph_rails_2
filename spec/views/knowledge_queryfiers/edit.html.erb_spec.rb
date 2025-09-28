@@ -21,7 +21,6 @@ RSpec.describe "knowledge_queryfiers/edit", type: :view do
     render
 
     assert_select "form[action=?][method=?]", knowledge_queryfier_path(knowledge_queryfier), "post" do
-
       assert_select "input[name=?]", "knowledge_queryfier[user_id]"
 
       assert_select "input[name=?]", "knowledge_queryfier[project_id]"
