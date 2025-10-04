@@ -2,6 +2,11 @@ class DbScrappersController < ApplicationController
   before_action :authenticate_user!
   before_action :set_db_scrapper, only: %i[ show edit update destroy ]
 
+  # GET /har_analiser
+  def har_analiser
+    render "db_scrappers/har_analiser", layout: false
+  end
+
   # GET /db_scrappers or /db_scrappers.json
   def index
     @db_scrappers = DbScrapper.all

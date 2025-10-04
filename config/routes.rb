@@ -19,7 +19,11 @@ Rails.application.routes.draw do
     to: "knowledge_queryfiers#execute_kg",
     via: [ :get, :post, :put, :delete ]
 
-    resources :db_scrappers
+    resources :db_scrappers do
+      collection do
+        get :har_analiser, action: :har_analiser # view
+      end
+    end
   end
   devise_for :users, controllers: {
     sessions: "users/sessions"

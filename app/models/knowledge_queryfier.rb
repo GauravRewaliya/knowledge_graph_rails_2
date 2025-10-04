@@ -21,6 +21,9 @@
 
 class KnowledgeQueryfier < ApplicationRecord
   require "ostruct"
+  store_accessor :meta_data_swagger_docs, :method, :url, :is_deprecated
+  validates :method, :url, presence: true
+  validates :method, inclusion: { in: %w[GET POST PUT PATCH DELETE] }
 
   belongs_to :user, optional: true
   belongs_to :project

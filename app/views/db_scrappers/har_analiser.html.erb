@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>HAR Analyzer</title>
+
+  <!-- Vue 3 CDN -->
+  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+
+  <!-- External helper libraries -->
+  <script src="https://cdn.jsdelivr.net/npm/filesize@8.0.3/lib/filesize.min.js"></script>
+  <script src="https://unpkg.com/@alenaksu/json-viewer@2.1.0/dist/json-viewer.bundle.js"></script>
+
+  <%= stylesheet_link_tag 'har_analyzer', media: 'all' %>
+</head>
+<body>
+  <div id="app" class="flex">
+    <!-- Left Panel -->
+    <div class="left">
+      <!-- Upload Section -->
+      <div class="upload_section card">
+        <div class="file_upload">
+          <h3>Upload HAR Files</h3>
+          <div class="inline">
+            <div class="left-20per upload_hint" @click="$refs.fileInput.click()">
+              <span class="link">Choose File</span> or <span>Drag And Drop</span>
+            </div>
+            <input
+              type="file"
+              ref="fileInput"
+              @change="handleFileUpload"
+              accept=".har,application/json"
+              style="display:none;"
+            />
+          </div>
+        </div>
+
+        <!-- Uploaded HAR List -->
+        <div class="har_list" v-if="files.length > 0">
+          <div v-for="(file, idx) in files" :key="idx" class="har_item">
+            <div class="file_meta">
+              <span class="file_name">{{ file.name }}</span>
+              <button class="btn small" @click="editFileName(idx)">Edit</button>
+              <button class="btn small danger" @click="discardFile(idx)">Discard</button>
+            </div>
+            <div class="file_stats">
+              <span>Total Requests: {{ file.totalRequests }}</span>
+              <span>Total Size: {{ file.totalSize }}</span>
+              <span>Load Time: {{ file.loadTime }}</span>
+            </div>
+          </div>
+        </div>
+        <div v-else class="empty_state">No HAR files uploaded yet.</div>
+      </div>
+
+      <!-- Search + Filters -->
+      <div class="search_section flex card">
+        <div class="filters">
+          <label>Category</label>
+          <select id="filterCategory" v-model="filterCategory">
+            <option value="all">All</option>
+            <option value="xhr">XHR</option>
+            <option value="js">JS</option>
+            <option value="css">CSS</option>
+            <option value="image">Image</option>
+            <option value="html">HTML</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+        <div class="search_box">
+          <label>Search URL</label>
+          <input id="urlSearch" placeholder="Search URL..." v-model="searchQuery" />
+        </div>
+      </div>
+
+      <!-- Requests Table -->
+      <div class="request_index card">
+        <h2>Requests</h2>
+        <div class="stats-row" id="globalStats" v-if="files.length === 0">
+          No files uploaded yet.
+        </div>
+
+        <div class="table-wrap" v-else>
+          <table id="requestsTable">
+            <thead>
+              <tr>
+                <th>File</th>
+                <th>#</th>
+                <th>Method</th>
+                <th>URL</th>
+                <th>Status</th>
+                <th>Type</th>
+                <th>Size</th>
+                <th>Time (ms)</th>
+                <th>Start</th>
+                <th>Show</th>
+                <th>Delete</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(req, idx) in filteredRequests" :key="idx">
+                <td>{{ req.fileName }}</td>
+                <td>{{ idx + 1 }}</td>
+                <td>{{ req.method }}</td>
+                <td class="truncate">{{ req.url }}</td>
+                <td>{{ req.status }}</td>
+                <td>{{ req.type }}</td>
+                <td>{{ req.size }}</td>
+                <td>{{ req.time }}</td>
+                <td>{{ req.start }}</td>
+                <td><button class="btn small" @click="showDetail(req)">Show</button></td>
+                <td><button class="btn small danger" @click="deleteRequest(idx)">Delete</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Panel -->
+    <aside class="right card">
+      <div class="nav">
+        <button
+          class="tab"
+          :class="{ active: activeTab === 'headers' }"
+          @click="activeTab = 'headers'"
+        >Headers</button>
+        <button
+          class="tab"
+          :class="{ active: activeTab === 'payload' }"
+          @click="activeTab = 'payload'"
+        >Payload</button>
+        <button
+          class="tab"
+          :class="{ active: activeTab === 'response' }"
+          @click="activeTab = 'response'"
+        >Response</button>
+      </div>
+
+      <div class="detail" id="detailView">
+        <div v-if="!selectedRequest" class="detail-empty">
+          Select a request from the left to inspect headers / payload / response.
+        </div>
+        <div v-else class="detail-content">
+          <div v-if="activeTab === 'headers'">
+            <table class="detail-table">
+              <tr v-for="(value, key) in selectedRequest.headers" :key="key">
+                <td class="key">{{ value.name }}</td>
+                <td class="value">{{ value.value }}</td>
+              </tr>
+            </table>
+          </div>
+          <div v-else-if="activeTab === 'payload'">
+            <pre>{{ selectedRequest.payload }}</pre>
+          </div>
+          <div v-show="activeTab === 'response'">
+            <div v-if="selectedRequest.response.mimeType === 'application/json'" ref="responseViewer"></div>
+            <pre v-else>{{ selectedRequest.response.text || selectedRequest.response }}</pre>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <%= javascript_include_tag 'har_analyzer' %>
+</body>
+</html>
