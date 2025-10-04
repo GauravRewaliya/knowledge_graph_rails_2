@@ -69,7 +69,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // detail view
         activeTab: "headers",
-        selectedRequest: null
+        selectedRequest: null,
+
+        // resizable panel
+        rightPanelWidth: 600,
+        isResizing: false
       };
     },
 
@@ -178,16 +182,16 @@ document.addEventListener("DOMContentLoaded", () => {
       handleFileUpload(event) {
         const file = event.target.files[0];
         if (!file) return;
-      
+
         const reader = new FileReader();
         reader.onload = (e) => {
           try {
             const harData = JSON.parse(e.target.result);
-      
+
             const entries = harData.log.entries || [];
             const totalSize = entries.reduce((sum, entry) => sum + (entry.response?.content?.size || 0), 0);
             const totalTime = entries.reduce((sum, entry) => sum + (entry.time || 0), 0);
-      
+
             const requests = entries.map(entry => ({
               fileName: file.name,
               method: entry.request.method,
@@ -201,7 +205,7 @@ document.addEventListener("DOMContentLoaded", () => {
               payload: entry.request.postData || {},
               response: entry.response.content || {}
             }));
-      
+
             this.addFile({
               name: file.name,
               totalRequests: entries.length,
@@ -214,8 +218,28 @@ document.addEventListener("DOMContentLoaded", () => {
           }
         };
         reader.readAsText(file);
+      },
+
+      startResize() {
+        this.isResizing = true;
+        document.addEventListener('mousemove', this.resize);
+        document.addEventListener('mouseup', this.stopResize);
+      },
+
+      resize(event) {
+        if (!this.isResizing) return;
+        const newWidth = window.innerWidth - event.clientX;
+        if (newWidth >= 300 && newWidth <= window.innerWidth - 300) {
+          this.rightPanelWidth = newWidth;
+        }
+      },
+
+      stopResize() {
+        this.isResizing = false;
+        document.removeEventListener('mousemove', this.resize);
+        document.removeEventListener('mouseup', this.stopResize);
       }
-    }    
+    }
   });
 
   app.mount("#app");

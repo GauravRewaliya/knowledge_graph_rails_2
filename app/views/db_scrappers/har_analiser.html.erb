@@ -117,8 +117,11 @@
       </div>
     </div>
 
+    <!-- Resizer -->
+    <div class="resizer" @mousedown="startResize"></div>
+
     <!-- Right Panel -->
-    <aside class="right card">
+    <aside class="right card" :style="{ width: rightPanelWidth + 'px' }">
       <div class="nav">
         <button
           class="tab"
