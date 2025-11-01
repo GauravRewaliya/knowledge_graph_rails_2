@@ -45,3 +45,4 @@ node_modules
 *.local
 
 /db_data
+/ai

@@ -28,6 +28,17 @@ class KnowledgeQueryfier < ApplicationRecord
   belongs_to :user, optional: true
   belongs_to :project
 
+  # def self.get_entites(workspace_id = nil)
+  #   where(workspace_id: workspace_id, entity_type: "entities") if workspace_id
+  #   where(entity_type: "entities")
+  # end
+
+  # def self.get_relations(workspace_id = nil)
+  #   where(workspace_id: workspace_id, entity_type: "relations") if workspace_id
+  #   where(entity_type: "relations")
+  # end
+
+
   def self.get_cypher_docs
     GraphQueryfier.all
   end

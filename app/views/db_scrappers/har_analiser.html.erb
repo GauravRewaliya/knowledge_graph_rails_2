@@ -75,7 +75,10 @@
 
       <!-- Requests Table -->
       <div class="request_index card">
-        <h2>Requests</h2>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <h2>Requests</h2>
+          <button class="btn" @click="exportHAR" v-if="files.length > 0">Export HAR</button>
+        </div>
         <div class="stats-row" id="globalStats" v-if="files.length === 0">
           No files uploaded yet.
         </div>

@@ -26,4 +26,24 @@
 class DbScrapper < ApplicationRecord
   belongs_to :user
   belongs_to :project
+
+
+  # enum :processing_status, {
+  #   unprocessed: 0,
+  #   sp_filterer: 1,
+  #   filtered: 2,
+  #   sp_conveter: 3,
+  #   conveter: 4,
+  #   sp_convert: 5,
+  #   final_response: 6
+  # }
+
+  # def request_struct
+  #   ScrapperRequestBase.from_hash(request || {})
+  # end
+
+  # def request_struct=(obj)
+  #   self.request = obj.as_json
+  # end
+  # # validates :url, :source_type_key, :workspace_id, presence: true
 end

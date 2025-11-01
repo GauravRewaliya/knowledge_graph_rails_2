@@ -1,0 +1,10 @@
+module Service
+  class JsonTraversal
+    def self.get_structure: (Hash[String, untyped] | Array[untyped]) -> (Hash[String, untyped] | Array[untyped])
+    def self.parse_to_new_structure: (untyped, untyped) -> untyped
+    def self.json_structure_stringify: (Hash[String, untyped] | Array[untyped]) -> String
+    def self.traverse_structure_stringify: (String, Hash[String, untyped]) -> Hash[String, untyped]
+    def self.traverse_json_structure: (untyped, untyped) -> (Hash[String, untyped] | Array[untyped])
+    # def self.traverse_json_structure: (Hash[String, untyped], (Hash[String, untyped] | Array[untyped])) -> Hash[String, untyped]
+  end
+end

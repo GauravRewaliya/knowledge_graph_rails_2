@@ -25,6 +25,14 @@ Rails.application.routes.draw do
       end
     end
   end
+  resources :application_docs do # -> title ( SerpApi, Desc , Docs: json )
+    # # rails g scaffold ApplicationDocs title desc docs:jsonb
+    # Create -> https://serpapi.com/google-images-light-api // serpapi's
+    # index ( open, edit ,delete )
+    # update
+    # delete
+    # show -> main view
+  end
   devise_for :users, controllers: {
     sessions: "users/sessions"
   }

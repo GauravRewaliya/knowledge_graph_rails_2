@@ -238,6 +238,45 @@ document.addEventListener("DOMContentLoaded", () => {
         this.isResizing = false;
         document.removeEventListener('mousemove', this.resize);
         document.removeEventListener('mouseup', this.stopResize);
+      },
+
+      exportHAR() {
+        // Build HAR structure
+        const harData = {
+          log: {
+            version: "1.2",
+            creator: {
+              name: "HAR Analyzer",
+              version: "1.0"
+            },
+            entries: this.requests.map(req => ({
+              startedDateTime: req.start,
+              time: req.time,
+              request: {
+                method: req.method,
+                url: req.url,
+                headers: req.headers,
+                postData: req.payload
+              },
+              response: {
+                status: req.status,
+                content: req.response
+              },
+              _resourceType: req.type
+            }))
+          }
+        };
+
+        // Create download
+        const blob = new Blob([JSON.stringify(harData, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `exported_${Date.now()}.har`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
       }
     }
   });
