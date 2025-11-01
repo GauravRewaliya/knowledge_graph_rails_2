@@ -1,0 +1,11 @@
+<% content_for :title, "New application doc" %>
+
+<h1>New application doc</h1>
+
+<%= render "form", application_doc: @application_doc %>
+
+<br>
+
+<div>
+  <%= link_to "Back to application docs", application_docs_path %>
+</div>

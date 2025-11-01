@@ -1,0 +1,12 @@
+<% content_for :title, "Editing application credential" %>
+
+<h1>Editing application credential</h1>
+
+<%= render "form", application_credential: @application_credential %>
+
+<br>
+
+<div>
+  <%= link_to "Show this application credential", @application_credential %> |
+  <%= link_to "Back to application credentials", application_credentials_path %>
+</div>

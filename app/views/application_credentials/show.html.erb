@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @application_credential %>
+
+<div>
+  <%= link_to "Edit this application credential", edit_application_credential_path(@application_credential) %> |
+  <%= link_to "Back to application credentials", application_credentials_path %>
+
+  <%= button_to "Destroy this application credential", @application_credential, method: :delete %>
+</div>

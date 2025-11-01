@@ -1,0 +1,1 @@
+json.partial! "application_credential_proxy_logs/application_credential_proxy_log", application_credential_proxy_log: @application_credential_proxy_log

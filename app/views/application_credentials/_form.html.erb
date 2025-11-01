@@ -1,0 +1,57 @@
+<%= form_with(model: application_credential) do |form| %>
+  <% if application_credential.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(application_credential.errors.count, "error") %> prohibited this application_credential from being saved:</h2>
+
+      <ul>
+        <% application_credential.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :application_doc_id, style: "display: block" %>
+    <%= form.text_field :application_doc_id %>
+  </div>
+
+  <div>
+    <%= form.label :title, style: "display: block" %>
+    <%= form.text_field :title %>
+  </div>
+
+  <div>
+    <%= form.label :description, style: "display: block" %>
+    <%= form.textarea :description %>
+  </div>
+
+  <div>
+    <%= form.label :credential_type, style: "display: block" %>
+    <%= form.text_field :credential_type %>
+  </div>
+
+  <div>
+    <%= form.label :rate_limits, style: "display: block" %>
+    <%= form.text_field :rate_limits %>
+  </div>
+
+  <div>
+    <%= form.label :settings, style: "display: block" %>
+    <%= form.text_field :settings %>
+  </div>
+
+  <div>
+    <%= form.label :auth_data, style: "display: block" %>
+    <%= form.text_field :auth_data %>
+  </div>
+
+  <div>
+    <%= form.label :is_active, style: "display: block" %>
+    <%= form.checkbox :is_active %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>

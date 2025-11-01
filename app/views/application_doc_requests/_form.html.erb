@@ -1,0 +1,42 @@
+<%= form_with(model: application_doc_request) do |form| %>
+  <% if application_doc_request.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(application_doc_request.errors.count, "error") %> prohibited this application_doc_request from being saved:</h2>
+
+      <ul>
+        <% application_doc_request.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :application_doc_id, style: "display: block" %>
+    <%= form.text_field :application_doc_id %>
+  </div>
+
+  <div>
+    <%= form.label :title, style: "display: block" %>
+    <%= form.text_field :title %>
+  </div>
+
+  <div>
+    <%= form.label :description, style: "display: block" %>
+    <%= form.textarea :description %>
+  </div>
+
+  <div>
+    <%= form.label :curl_template, style: "display: block" %>
+    <%= form.textarea :curl_template %>
+  </div>
+
+  <div>
+    <%= form.label :swagger_data, style: "display: block" %>
+    <%= form.text_field :swagger_data %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>

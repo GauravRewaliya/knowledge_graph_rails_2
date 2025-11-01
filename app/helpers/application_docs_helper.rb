@@ -1,0 +1,2 @@
+module ApplicationDocsHelper
+end

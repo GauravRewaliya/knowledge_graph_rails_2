@@ -1,4 +1,9 @@
 Rails.application.routes.draw do
+  resources :user_credits
+  resources :application_credential_proxy_logs
+  resources :application_credentials
+  resources :application_doc_requests
+  resources :application_docs
   resources :projects do
     resources :knowledge_queryfiers do
       collection do

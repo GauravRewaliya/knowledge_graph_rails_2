@@ -1,0 +1,16 @@
+<p style="color: green"><%= notice %></p>
+
+<% content_for :title, "Application doc requests" %>
+
+<h1>Application doc requests</h1>
+
+<div id="application_doc_requests">
+  <% @application_doc_requests.each do |application_doc_request| %>
+    <%= render application_doc_request %>
+    <p>
+      <%= link_to "Show this application doc request", application_doc_request %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New application doc request", new_application_doc_request_path %>

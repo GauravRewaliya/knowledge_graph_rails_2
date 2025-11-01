@@ -1,0 +1,2 @@
+module ApplicationDocRequestsHelper
+end

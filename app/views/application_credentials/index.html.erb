@@ -1,0 +1,16 @@
+<p style="color: green"><%= notice %></p>
+
+<% content_for :title, "Application credentials" %>
+
+<h1>Application credentials</h1>
+
+<div id="application_credentials">
+  <% @application_credentials.each do |application_credential| %>
+    <%= render application_credential %>
+    <p>
+      <%= link_to "Show this application credential", application_credential %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New application credential", new_application_credential_path %>

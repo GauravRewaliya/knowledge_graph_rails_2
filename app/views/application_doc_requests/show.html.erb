@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @application_doc_request %>
+
+<div>
+  <%= link_to "Edit this application doc request", edit_application_doc_request_path(@application_doc_request) %> |
+  <%= link_to "Back to application doc requests", application_doc_requests_path %>
+
+  <%= button_to "Destroy this application doc request", @application_doc_request, method: :delete %>
+</div>

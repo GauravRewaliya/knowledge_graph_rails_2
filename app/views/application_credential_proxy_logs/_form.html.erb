@@ -1,0 +1,62 @@
+<%= form_with(model: application_credential_proxy_log) do |form| %>
+  <% if application_credential_proxy_log.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(application_credential_proxy_log.errors.count, "error") %> prohibited this application_credential_proxy_log from being saved:</h2>
+
+      <ul>
+        <% application_credential_proxy_log.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :application_doc_id, style: "display: block" %>
+    <%= form.text_field :application_doc_id %>
+  </div>
+
+  <div>
+    <%= form.label :application_credential_id, style: "display: block" %>
+    <%= form.text_field :application_credential_id %>
+  </div>
+
+  <div>
+    <%= form.label :user_id, style: "display: block" %>
+    <%= form.text_field :user_id %>
+  </div>
+
+  <div>
+    <%= form.label :request_data, style: "display: block" %>
+    <%= form.text_field :request_data %>
+  </div>
+
+  <div>
+    <%= form.label :response_data, style: "display: block" %>
+    <%= form.text_field :response_data %>
+  </div>
+
+  <div>
+    <%= form.label :requested_at, style: "display: block" %>
+    <%= form.datetime_field :requested_at %>
+  </div>
+
+  <div>
+    <%= form.label :finished_at, style: "display: block" %>
+    <%= form.datetime_field :finished_at %>
+  </div>
+
+  <div>
+    <%= form.label :credits_used, style: "display: block" %>
+    <%= form.text_field :credits_used %>
+  </div>
+
+  <div>
+    <%= form.label :duration_ms, style: "display: block" %>
+    <%= form.number_field :duration_ms %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>
