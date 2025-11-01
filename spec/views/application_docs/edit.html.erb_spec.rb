@@ -6,7 +6,7 @@ RSpec.describe "application_docs/edit", type: :view do
       title: "MyString",
       description: "MyText",
       base_url: "MyString",
-      tags: "MyText",
+      tags: [ "MyText" ],
       is_active: false,
       docs: "",
       auth_fields: ""
@@ -21,14 +21,13 @@ RSpec.describe "application_docs/edit", type: :view do
     render
 
     assert_select "form[action=?][method=?]", application_doc_path(application_doc), "post" do
-
       assert_select "input[name=?]", "application_doc[title]"
 
       assert_select "textarea[name=?]", "application_doc[description]"
 
       assert_select "input[name=?]", "application_doc[base_url]"
 
-      assert_select "textarea[name=?]", "application_doc[tags]"
+      assert_select "input[name=?]", "application_doc[tags]"
 
       assert_select "input[name=?]", "application_doc[is_active]"
 

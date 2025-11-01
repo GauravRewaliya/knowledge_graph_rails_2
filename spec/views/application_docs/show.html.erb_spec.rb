@@ -6,7 +6,7 @@ RSpec.describe "application_docs/show", type: :view do
       title: "Title",
       description: "MyText",
       base_url: "Base Url",
-      tags: "MyText",
+      tags: [ "MyText" ],
       is_active: false,
       docs: "",
       auth_fields: ""

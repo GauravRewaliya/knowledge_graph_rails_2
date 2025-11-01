@@ -1,9 +1,5 @@
 Rails.application.routes.draw do
   resources :user_credits
-  resources :application_credential_proxy_logs
-  resources :application_credentials
-  resources :application_doc_requests
-  resources :application_docs
   resources :projects do
     resources :knowledge_queryfiers do
       collection do
@@ -37,6 +33,18 @@ Rails.application.routes.draw do
     # update
     # delete
     # show -> main view
+    # Nested routes for related resources
+    resources :application_doc_requests, except: [ :index ]
+    resources :application_credentials, except: [ :index ]
+    resources :application_credential_proxy_logs
+
+    # Custom actions for ApplicationDoc
+    member do
+      post :import_curl
+      get :swagger          # HTML swagger UI
+      get :swagger_spec     # JSON swagger spec
+      get :swagger_ui       # Alternative swagger UI
+    end
   end
   devise_for :users, controllers: {
     sessions: "users/sessions"

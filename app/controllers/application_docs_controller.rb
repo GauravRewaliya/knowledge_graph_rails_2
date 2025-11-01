@@ -8,6 +8,8 @@ class ApplicationDocsController < ApplicationController
 
   # GET /application_docs/1 or /application_docs/1.json
   def show
+    @application_doc_requests = @application_doc.application_doc_requests
+    @application_credentials = @application_doc.application_credentials
   end
 
   # GET /application_docs/new
@@ -55,6 +57,23 @@ class ApplicationDocsController < ApplicationController
       format.html { redirect_to application_docs_path, notice: "Application doc was successfully destroyed.", status: :see_other }
       format.json { head :no_content }
     end
+  end
+
+  # Custom actions
+  def import_curl
+    # Import logic here
+  end
+
+  # SWAGGER SPECIFIC ACTIONS
+  def swagger
+    respond_to do |format|
+      format.html { render "swagger", layout: false }
+      format.json { render json: generate_swagger_json(@application_doc) }
+    end
+  end
+
+  def swagger_ui
+    render "swagger_ui", layout: false
   end
 
   private

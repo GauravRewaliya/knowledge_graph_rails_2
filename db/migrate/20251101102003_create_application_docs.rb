@@ -4,7 +4,7 @@ class CreateApplicationDocs < ActiveRecord::Migration[8.0]
       t.string :title
       t.text :description
       t.string :base_url
-      t.text :tags
+      t.jsonb :tags, default: []
       t.boolean :is_active
       t.jsonb :docs
       t.jsonb :auth_fields

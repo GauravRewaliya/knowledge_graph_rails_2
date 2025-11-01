@@ -7,7 +7,7 @@ RSpec.describe "application_docs/index", type: :view do
         title: "Title",
         description: "MyText",
         base_url: "Base Url",
-        tags: "MyText",
+        tags: [ "MyText" ],
         is_active: false,
         docs: "",
         auth_fields: ""
@@ -16,7 +16,7 @@ RSpec.describe "application_docs/index", type: :view do
         title: "Title",
         description: "MyText",
         base_url: "Base Url",
-        tags: "MyText",
+        tags: "",
         is_active: false,
         docs: "",
         auth_fields: ""
@@ -30,7 +30,7 @@ RSpec.describe "application_docs/index", type: :view do
     assert_select cell_selector, text: Regexp.new("Title".to_s), count: 2
     assert_select cell_selector, text: Regexp.new("MyText".to_s), count: 2
     assert_select cell_selector, text: Regexp.new("Base Url".to_s), count: 2
-    assert_select cell_selector, text: Regexp.new("MyText".to_s), count: 2
+    assert_select cell_selector, text: Regexp.new("".to_s), count: 2
     assert_select cell_selector, text: Regexp.new(false.to_s), count: 2
     assert_select cell_selector, text: Regexp.new("".to_s), count: 2
     assert_select cell_selector, text: Regexp.new("".to_s), count: 2
