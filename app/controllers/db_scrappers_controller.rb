@@ -1,5 +1,5 @@
 class DbScrappersController < ApplicationController
-  before_action :authenticate_user!
+  # before_action :authenticate_user!
   before_action :set_db_scrapper, only: %i[ show edit update destroy ]
 
   # GET /har_analiser

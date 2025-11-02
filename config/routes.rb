@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get "/current_user", to: "users#current_user"
   resources :user_credits
   resources :projects do
     resources :knowledge_queryfiers do
