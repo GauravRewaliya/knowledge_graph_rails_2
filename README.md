@@ -54,3 +54,6 @@ rails s
 # rails g scaffold ApplicationCredientailProxyLog request: {}, response: {}, request_at: ,finish_at: 
 
 <!-- rails g scaffold UserCredit user:references total_credits:decimal used_credits:decimal current_balance:decimal -->
+
+login
+application_docs

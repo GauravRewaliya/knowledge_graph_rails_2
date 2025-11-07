@@ -42,6 +42,7 @@ Rails.application.routes.draw do
     # Custom actions for ApplicationDoc
     member do
       post :import_curl
+      post :test_curl
       get :swagger          # HTML swagger UI
       get :swagger_spec     # JSON swagger spec
       get :swagger_ui       # Alternative swagger UI

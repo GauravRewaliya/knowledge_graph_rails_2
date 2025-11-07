@@ -76,6 +76,27 @@ class ApplicationDocsController < ApplicationController
     render "swagger_ui", layout: false
   end
 
+  def test_curl
+    curl_command = params.require(:curl)
+
+    begin
+      # Execute the curl command using Open3 for safe execution
+      stdout, stderr, status = Open3.capture3(curl_command)
+
+      render json: {
+        success: true,
+        status_code: status.exitstatus,
+        stdout: stdout,
+        stderr: stderr
+      }
+    rescue StandardError => e
+      render json: {
+        success: false,
+        error: e.message
+      }, status: :bad_request
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_application_doc
