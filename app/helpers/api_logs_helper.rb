@@ -1,0 +1,2 @@
+module ApiLogsHelper
+end

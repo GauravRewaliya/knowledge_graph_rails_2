@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  resources :api_logs
+  match "/proxy/*path", to: "proxy#forward", via: :all
+  match "/proxy", to: "proxy#forward", via: :all
   get "/current_user", to: "users#current_user"
   resources :user_credits
   resources :projects do

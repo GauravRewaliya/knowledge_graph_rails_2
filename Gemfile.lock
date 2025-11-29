@@ -141,6 +141,12 @@ GEM
     factory_bot_rails (6.5.1)
       factory_bot (~> 6.5)
       railties (>= 6.1.0)
+    faraday (2.14.0)
+      faraday-net_http (>= 2.0, < 3.5)
+      json
+      logger
+    faraday-net_http (3.4.2)
+      net-http (~> 0.5)
     ffi (1.17.2-aarch64-linux-gnu)
     ffi (1.17.2-aarch64-linux-musl)
     ffi (1.17.2-arm-linux-gnu)
@@ -224,6 +230,8 @@ GEM
       async-io
       connection_pool
       zeitwerk (>= 2.1.10)
+    net-http (0.8.0)
+      uri (>= 0.11.1)
     net-imap (0.5.10)
       date
       net-protocol
@@ -238,7 +246,7 @@ GEM
     net-smtp (0.5.1)
       net-protocol
     net-ssh (7.3.0)
-    nio4r (2.7.4)
+    nio4r (2.7.5)
     nokogiri (1.18.9-aarch64-linux-gnu)
       racc (~> 1.4)
     nokogiri (1.18.9-aarch64-linux-musl)
@@ -280,7 +288,7 @@ GEM
       date
       stringio
     public_suffix (6.0.2)
-    puma (7.0.1)
+    puma (7.1.0)
       nio4r (~> 2.0)
     raabro (1.4.0)
     racc (1.8.1)
@@ -507,6 +515,7 @@ DEPENDENCIES
   devise (~> 4.9)
   dotenv-rails (~> 3.1)
   factory_bot_rails (~> 6.5)
+  faraday (~> 2.14)
   foreman (~> 0.90.0)
   hashid-rails (~> 1.4)
   httparty (~> 0.23.1)

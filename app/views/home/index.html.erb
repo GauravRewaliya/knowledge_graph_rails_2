@@ -6,3 +6,30 @@
 <% end %>
 <h1>Welcome Signin User</h1>
 <%= link_to "Projects", projects_path %>
+<div>
+    Hiii
+</div>
+<script type="module">
+import { customProxy } from "utils/customProxy";
+
+async function search() {
+  const serpApiKey = "<%= ENV['SERP_API'] %>";
+  const serpUrl = "https://serpapi.com/search";
+  const url = `${serpUrl}?q=test&api_key=${serpApiKey}`;
+
+  await customProxy({
+    is_proxy: true,
+    base_url: `${window.location.origin}/proxy`,
+    custom_app_key: "client-001",
+
+    requestFn: () => ({
+      method: "GET",
+      url
+    }),
+
+    onSuccess: (data) => console.log(data),
+    onError: (err) => console.error(err)
+  });
+}
+await search()
+</script>

@@ -1,5 +1,6 @@
 class ApplicationDoc < ApplicationRecord
   store :docs, accessors: [ :openapi_version, :info, :external_docs ], coder: JSON
+  # external_docs as array
   store :auth_fields, accessors: [ :api_key_param, :engine_param, :query_param ], coder: JSON
 
   has_many :api_endpoints, dependent: :destroy

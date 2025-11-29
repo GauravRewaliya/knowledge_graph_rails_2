@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @api_log %>
+
+<div>
+  <%= link_to "Edit this api log", edit_api_log_path(@api_log) %> |
+  <%= link_to "Back to api logs", api_logs_path %>
+
+  <%= button_to "Destroy this api log", @api_log, method: :delete %>
+</div>

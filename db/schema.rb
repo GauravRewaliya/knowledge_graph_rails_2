@@ -10,9 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_11_01_103338) do
+ActiveRecord::Schema[8.0].define(version: 2025_11_29_042601) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "api_logs", force: :cascade do |t|
+    t.string "method"
+    t.string "target_url"
+    t.jsonb "request"
+    t.jsonb "response"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "application_credential_proxy_logs", force: :cascade do |t|
     t.bigint "application_doc_id", null: false

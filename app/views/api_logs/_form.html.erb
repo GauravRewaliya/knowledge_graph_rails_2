@@ -1,0 +1,37 @@
+<%= form_with(model: api_log) do |form| %>
+  <% if api_log.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(api_log.errors.count, "error") %> prohibited this api_log from being saved:</h2>
+
+      <ul>
+        <% api_log.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :method, style: "display: block" %>
+    <%= form.text_field :method %>
+  </div>
+
+  <div>
+    <%= form.label :target_url, style: "display: block" %>
+    <%= form.text_field :target_url %>
+  </div>
+
+  <div>
+    <%= form.label :request, style: "display: block" %>
+    <%= form.text_field :request %>
+  </div>
+
+  <div>
+    <%= form.label :response, style: "display: block" %>
+    <%= form.text_field :response %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>

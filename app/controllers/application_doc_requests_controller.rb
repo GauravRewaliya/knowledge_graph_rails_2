@@ -28,8 +28,8 @@ class ApplicationDocRequestsController < ApplicationController
         format.html { redirect_to @application_doc_request, notice: "Application doc request was successfully created." }
         format.json { render :show, status: :created, location: @application_doc_request }
       else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @application_doc_request.errors, status: :unprocessable_entity }
+        format.html { render :new, status: :unprocessable_content }
+        format.json { render json: @application_doc_request.errors, status: :unprocessable_content }
       end
     end
   end
@@ -41,8 +41,8 @@ class ApplicationDocRequestsController < ApplicationController
         format.html { redirect_to @application_doc_request, notice: "Application doc request was successfully updated.", status: :see_other }
         format.json { render :show, status: :ok, location: @application_doc_request }
       else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @application_doc_request.errors, status: :unprocessable_entity }
+        format.html { render :edit, status: :unprocessable_content }
+        format.json { render json: @application_doc_request.errors, status: :unprocessable_content }
       end
     end
   end

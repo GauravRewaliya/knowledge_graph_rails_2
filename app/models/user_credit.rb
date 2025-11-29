@@ -1,3 +1,20 @@
+# == Schema Information
+#
+# Table name: user_credits
+#
+#  id              :integer          not null, primary key
+#  user_id         :integer          not null
+#  total_credits   :decimal(, )
+#  used_credits    :decimal(, )
+#  current_balance :decimal(, )
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#
+# Indexes
+#
+#  index_user_credits_on_user_id  (user_id)
+#
+
 class UserCredit < ApplicationRecord
   belongs_to :user
   has_many :application_credential_proxy_logs, dependent: :destroy
