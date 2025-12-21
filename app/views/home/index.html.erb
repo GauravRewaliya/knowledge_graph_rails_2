@@ -19,8 +19,18 @@ async function search() {
 
   await customProxy({
     is_proxy: true,
-    base_url: `${window.location.origin}/proxy`,
-    custom_app_key: "client-001",
+    cache_config: {
+      chache_from: ["global", "personal"]
+      cached_results: true, // or timeinSec
+      share_my_results: false,
+    },
+    request_confi: {
+      base_proxy_url: `${window.location.origin}/proxy`,
+      proxy_app_key: "client-001",
+    },
+    response_config: {
+      get_meta_details: false // if true you get extra data on response_metadata
+    },
 
     requestFn: () => ({
       method: "GET",

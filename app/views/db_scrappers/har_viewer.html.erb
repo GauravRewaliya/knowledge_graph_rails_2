@@ -1,0 +1,473 @@
+<div id="har-viewer-app" class="har-viewer-container">
+  <link rel="stylesheet" href="<%= asset_path('har_viewer.css') %>">
+
+  <div class="har-layout">
+    <!-- Sidebar Navigation -->
+    <nav class="har-sidebar">
+      <%= link_to projects_path, class: "back-button" do %>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+      <% end %>
+
+      <div class="nav-group">
+        <button @click="viewMode = 'upload'" :class="{ active: viewMode === 'upload' }" class="nav-button" title="Add HAR">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/>
+          </svg>
+        </button>
+
+        <button @click="viewMode = 'viewer'" :class="{ active: viewMode === 'viewer' }" class="nav-button" title="Viewer" :disabled="requests.length === 0">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+            <circle cx="12" cy="12" r="3"/>
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="har-main-content">
+      <!-- Upload Section -->
+      <div v-if="viewMode === 'upload'" class="har-upload-section">
+        <div class="upload-container">
+          <div class="upload-box" @dragover="dragover = true" @dragleave="dragover = false" @drop="handleDrop">
+            <input
+              type="file"
+              accept=".har"
+              @change="handleFileChange"
+              style="display: none"
+              ref="fileInput"
+            >
+            <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/>
+            </svg>
+            <h2>Drop HAR file here or click to upload</h2>
+            <p>Supported format: .har (HTTP Archive)</p>
+            <button @click="$refs.fileInput.click()" class="btn-primary">Choose File</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Viewer Section -->
+      <div v-else-if="viewMode === 'viewer'" class="har-viewer-section">
+        <div class="har-viewer-layout">
+          <!-- Left Panel: Requests List -->
+          <div :class="['har-left-panel', { 'split': selectedRequest }]">
+            <!-- Toolbar -->
+            <div class="har-toolbar">
+              <div class="search-container">
+                <input
+                  v-model="searchQuery"
+                  type="text"
+                  placeholder="Filter requests..."
+                  class="search-input"
+                >
+              </div>
+              <div class="toolbar-controls">
+                <select v-model="groupMode" class="select-input">
+                  <option value="none">None</option>
+                  <option value="file">By File</option>
+                  <option value="endpoint">By Endpoint</option>
+                </select>
+
+                <button @click="toggleViewType" :title="viewType === 'table' ? 'Waterfall' : 'Table'" class="btn-icon">
+                  <svg v-if="viewType === 'table'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 5h18M3 10h18M3 15h18M3 20h18"/>
+                  </svg>
+                  <svg v-else viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 20V10M12 20v-8M6 20V4"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <!-- Requests Table -->
+            <div class="har-table">
+              <div v-if="filteredRequests.length === 0" class="empty-state">
+                No requests found
+              </div>
+              <template v-else>
+                <div v-for="(request, idx) in filteredRequests" :key="request._id" @click="selectedRequest = request" :class="['har-row', { active: selectedRequest && selectedRequest._id === request._id }]">
+                  <span class="method-badge" :class="getMethodClass(request.request.method)">
+                    {{ request.request.method }}
+                  </span>
+                  <span class="status-badge" :class="getStatusClass(request.response.status)">
+                    {{ request.response.status }}
+                  </span>
+                  <span class="url-cell" :title="request.request.url">
+                    {{ truncateUrl(request.request.url) }}
+                  </span>
+                  <span class="size-cell">
+                    {{ formatSize(request.response.content.size) }}
+                  </span>
+                  <span class="time-cell">
+                    {{ Math.round(request.time) }}ms
+                  </span>
+                </div>
+              </template>
+            </div>
+
+            <!-- Selection Footer -->
+            <div class="har-footer">
+              <div class="selection-info">
+                <span>{{ requests.length }} total</span>
+                <button @click="saveSelectedEntries" :disabled="selectedIndices.size === 0" class="btn-save">
+                  Save Selected ({{ selectedIndices.size }})
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Panel: Request Details -->
+          <div v-if="selectedRequest" class="har-right-panel">
+            <div class="detail-header">
+              <h3>{{ selectedRequest.request.method }} {{ selectedRequest.request.url }}</h3>
+              <button @click="selectedRequest = null" class="btn-close">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="18" y1="6" x2="6" y2="18"/>
+                  <line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+              </button>
+            </div>
+
+            <div class="detail-tabs">
+              <button
+                v-for="tab in ['headers', 'response']"
+                :key="tab"
+                @click="activeTab = tab"
+                :class="['tab-button', { active: activeTab === tab }]"
+              >
+                {{ tab.charAt(0).toUpperCase() + tab.slice(1) }}
+              </button>
+            </div>
+
+            <div class="detail-content">
+              <!-- Headers Tab -->
+              <div v-if="activeTab === 'headers'" class="tab-content">
+                <div class="headers-section">
+                  <h4>Request Headers</h4>
+                  <div class="headers-list">
+                    <div v-for="(header, idx) in selectedRequest.request.headers.slice(0, 10)" :key="idx" class="header-item">
+                      <span class="header-name">{{ header.name }}:</span>
+                      <span class="header-value">{{ header.value }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Response Tab -->
+              <div v-if="activeTab === 'response'" class="tab-content">
+                <div class="response-section">
+                  <h4>Response Body</h4>
+                  <div v-if="isJsonResponse" class="json-viewer-container">
+                    <json-viewer :data="parsedResponse"></json-viewer>
+                  </div>
+                  <pre v-else class="response-raw">{{ selectedRequest.response.content.text }}</pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- JSON Viewer Component Template -->
+<script type="text/x-template" id="json-viewer-template">
+  <div class="json-viewer">
+    <div v-if="isValue" class="json-value-wrapper">
+      <span class="json-label">{{ label }}:</span>
+      <span :class="['json-primitive', valueType]">{{ formattedValue }}</span>
+    </div>
+    <div v-else class="json-object-wrapper">
+      <div @click="expanded = !expanded" class="json-header">
+        <span v-if="hasChildren" class="expand-icon">{{ expanded ? '▼' : '▶' }}</span>
+        <span v-else class="expand-icon empty"></span>
+        <span class="json-label">{{ label }}</span>
+        <span class="json-bracket">{{ isArray ? '[' : '{' }}</span>
+      </div>
+      <div v-if="expanded && hasChildren" class="json-children">
+        <json-viewer
+          v-for="(value, key) in objectEntries"
+          :key="key"
+          :data="value"
+          :label="String(key)"
+        ></json-viewer>
+        <span class="json-bracket">{{ isArray ? ']' : '}' }}</span>
+      </div>
+    </div>
+  </div>
+</script>
+
+<script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+<script>
+const { createApp, ref, computed, watch } = Vue;
+
+// JSON Viewer Component
+const JsonViewer = {
+  name: 'JsonViewer',
+  template: '#json-viewer-template',
+  props: {
+    data: null,
+    label: {
+      type: String,
+      default: 'root'
+    }
+  },
+  setup(props) {
+    const expanded = ref(true);
+
+    const isValue = computed(() => {
+      const data = props.data;
+      return data === null || typeof data !== 'object';
+    });
+
+    const isArray = computed(() => Array.isArray(props.data));
+
+    const hasChildren = computed(() => {
+      const data = props.data;
+      if (Array.isArray(data)) return data.length > 0;
+      if (typeof data === 'object' && data !== null) return Object.keys(data).length > 0;
+      return false;
+    });
+
+    const valueType = computed(() => {
+      if (props.data === null) return 'null';
+      if (typeof props.data === 'string') return 'string';
+      if (typeof props.data === 'number') return 'number';
+      if (typeof props.data === 'boolean') return 'boolean';
+      return 'unknown';
+    });
+
+    const formattedValue = computed(() => {
+      if (props.data === null) return 'null';
+      if (typeof props.data === 'string') return `"${props.data.substring(0, 100)}"`;
+      return String(props.data);
+    });
+
+    const objectEntries = computed(() => {
+      if (Array.isArray(props.data)) {
+        return props.data.map((item, idx) => [idx, item]);
+      }
+      if (typeof props.data === 'object' && props.data !== null) {
+        return Object.entries(props.data);
+      }
+      return [];
+    });
+
+    return {
+      expanded,
+      isValue,
+      isArray,
+      hasChildren,
+      valueType,
+      formattedValue,
+      objectEntries
+    };
+  }
+};
+
+// Main App
+const app = createApp({
+  components: { JsonViewer },
+  setup() {
+    const projectId = '<%= @project.id %>';
+    const viewMode = ref('upload');
+    const viewType = ref('table');
+    const groupMode = ref('none');
+    const searchQuery = ref('');
+    const requests = ref([]);
+    const selectedRequest = ref(null);
+    const selectedIndices = ref(new Set());
+    const activeTab = ref('headers');
+    const dragover = ref(false);
+    const fileInput = ref(null);
+
+    const filteredRequests = computed(() => {
+      let filtered = requests.value;
+
+      if (searchQuery.value.trim()) {
+        const q = searchQuery.value.toLowerCase();
+        filtered = filtered.filter(r => r.request.url.toLowerCase().includes(q));
+      }
+
+      return filtered;
+    });
+
+    const isJsonResponse = computed(() => {
+      if (!selectedRequest.value) return false;
+      const mimeType = selectedRequest.value.response.content.mimeType;
+      return mimeType && mimeType.includes('json');
+    });
+
+    const parsedResponse = computed(() => {
+      if (!selectedRequest.value || !isJsonResponse.value) return null;
+      try {
+        return JSON.parse(selectedRequest.value.response.content.text);
+      } catch (e) {
+        return { error: 'Invalid JSON', raw: selectedRequest.value.response.content.text };
+      }
+    });
+
+    const handleFileChange = (event) => {
+      const file = event.target.files[0];
+      if (file) {
+        parseHarFile(file);
+      }
+    };
+
+    const handleDrop = (event) => {
+      event.preventDefault();
+      dragover.value = false;
+      const file = event.dataTransfer.files[0];
+      if (file && file.name.endsWith('.har')) {
+        parseHarFile(file);
+      }
+    };
+
+    const parseHarFile = (file) => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const har = JSON.parse(e.target.result);
+          const entries = har.log && har.log.entries ? har.log.entries : [];
+
+          requests.value = entries.map((entry, idx) => ({
+            _id: `entry-${Date.now()}-${idx}`,
+            _index: idx,
+            _selected: false,
+            _harName: file.name,
+            startedDateTime: entry.startedDateTime || new Date().toISOString(),
+            time: entry.time || 0,
+            request: {
+              method: entry.request.method || 'GET',
+              url: entry.request.url || '',
+              headers: entry.request.headers || [],
+              postData: entry.request.postData || {}
+            },
+            response: {
+              status: entry.response.status || 0,
+              statusText: entry.response.statusText || 'Unknown',
+              headers: entry.response.headers || [],
+              content: {
+                size: entry.response.content.size || 0,
+                mimeType: entry.response.content.mimeType || 'application/octet-stream',
+                text: entry.response.content.text || ''
+              }
+            }
+          }));
+
+          viewMode.value = 'viewer';
+        } catch (error) {
+          alert('Error parsing HAR file: ' + error.message);
+        }
+      };
+      reader.readAsText(file);
+    };
+
+    const truncateUrl = (url) => {
+      try {
+        const urlObj = new URL(url);
+        const parts = urlObj.pathname.split('/').filter(p => p);
+        return parts.slice(-2).join('/') || urlObj.hostname;
+      } catch {
+        return url.substring(0, 50);
+      }
+    };
+
+    const formatSize = (bytes) => {
+      if (bytes === 0) return '0 B';
+      const k = 1024;
+      const sizes = ['B', 'KB', 'MB'];
+      const i = Math.floor(Math.log(bytes) / Math.log(k));
+      return Math.round((bytes / Math.pow(k, i)) * 10) / 10 + ' ' + sizes[i];
+    };
+
+    const getMethodClass = (method) => {
+      const classes = {
+        'GET': 'method-get',
+        'POST': 'method-post',
+        'PUT': 'method-put',
+        'DELETE': 'method-delete',
+        'PATCH': 'method-patch'
+      };
+      return classes[method] || 'method-other';
+    };
+
+    const getStatusClass = (status) => {
+      if (status < 400) return 'status-success';
+      if (status < 500) return 'status-client-error';
+      return 'status-server-error';
+    };
+
+    const toggleViewType = () => {
+      viewType.value = viewType.value === 'table' ? 'waterfall' : 'table';
+    };
+
+    const saveSelectedEntries = async () => {
+      const selected = requests.value;
+      if (selected.length === 0) {
+        alert('Please select entries to save');
+        return;
+      }
+
+      try {
+        const response = await fetch(
+          `/projects/${projectId}/db_scrappers/save_har_entries`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
+            },
+            body: JSON.stringify({
+              entries: selected,
+              file_name: 'imported_har.har'
+            })
+          }
+        );
+
+        const data = await response.json();
+        if (data.success) {
+          alert('HAR entries saved successfully!');
+          requests.value = [];
+          viewMode.value = 'upload';
+        } else {
+          alert('Error: ' + data.error);
+        }
+      } catch (error) {
+        alert('Error saving entries: ' + error.message);
+      }
+    };
+
+    return {
+      projectId,
+      viewMode,
+      viewType,
+      groupMode,
+      searchQuery,
+      requests,
+      selectedRequest,
+      selectedIndices,
+      activeTab,
+      dragover,
+      fileInput,
+      filteredRequests,
+      isJsonResponse,
+      parsedResponse,
+      handleFileChange,
+      handleDrop,
+      truncateUrl,
+      formatSize,
+      getMethodClass,
+      getStatusClass,
+      toggleViewType,
+      saveSelectedEntries
+    };
+  }
+});
+
+app.mount('#har-viewer-app');
+</script>

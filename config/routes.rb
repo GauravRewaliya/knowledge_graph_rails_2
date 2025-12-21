@@ -26,7 +26,10 @@ Rails.application.routes.draw do
 
     resources :db_scrappers do
       collection do
-        get :har_analiser, action: :har_analiser # view
+        get :har_analiser, action: :har_analiser
+        get :har_viewer, action: :har_viewer
+        get :har_modal, action: :har_modal
+        post :save_har_entries, action: :save_har_entries
       end
     end
   end
@@ -54,7 +57,7 @@ Rails.application.routes.draw do
   devise_for :users, controllers: {
     sessions: "users/sessions"
   }
-  root to: "home#index"
+  root to: "projects#index"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
