@@ -57,3 +57,7 @@ rails s
 
 login
 application_docs
+
+
+npm install -D tailwindcss @tailwindcss/postcss autoprefixer
+

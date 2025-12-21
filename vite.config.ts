@@ -13,4 +13,9 @@ export default defineConfig({
       'app/assets/**/*'
     ])
   ],
+  resolve: {
+    alias: {
+      "@assets": "./app/assets",
+    },
+  },
 })
