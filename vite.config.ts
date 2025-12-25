@@ -1,3 +1,4 @@
+import path from 'path'
 import { defineConfig } from 'vite'
 import FullReload from 'vite-plugin-full-reload'
 import RubyPlugin from 'vite-plugin-ruby'
@@ -15,7 +16,7 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      "@assets": "./app/assets",
+      "@": path.resolve(__dirname, "app/javascript"),
     },
   },
 })
